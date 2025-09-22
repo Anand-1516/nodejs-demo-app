@@ -1,43 +1,43 @@
-name: CI/CD Pipeline   # Workflow name shown in GitHub Actions tab
+name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main" ]   # Trigger workflow only when code is pushed to main branch
+    branches: [ "main" ]
 
 jobs:
-  build-test:              # First job: run Node.js tests
-    runs-on: ubuntu-latest # Job runs on GitHub's Ubuntu runner
+  build-test:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3   # Pulls your repo code into the runner
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'        # Install Node.js version 18
+          node-version: '18'
 
       - name: Install dependencies
-        run: npm install            # Install NPM packages
+        run: npm install
 
       - name: Run tests
-        run: npm test               # Execute tests (defined in package.json)
+        run: npm test
 
-  docker-build:            # Second job: build and push Docker image
+  docker-build:
     runs-on: ubuntu-latest
-    needs: build-test      # Runs only if build-test job succeeds
+    needs: build-test
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3   # Again, get source code
+        uses: actions/checkout@v3
 
       - name: Log in to DockerHub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}   # DockerHub username from repo secrets
-          password: ${{ secrets.DOCKER_PASSWORD }}   # DockerHub access token from repo secrets
+          username: anand1516
+          password: ${{ secrets.DOCKER_PASSWORD }}   # token stored in GitHub Secrets
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: .                # Build context = current folder
-          push: true                # Push image to DockerHub
-          tags: ${{ secrets.DOCKER_USERNAME }}/nodejs-demo-app:latest  # Image name:tag
+          context: .
+          push: true
+          tags: anand1516/nodejs-demo-app:latest
