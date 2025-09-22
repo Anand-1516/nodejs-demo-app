@@ -3,10 +3,9 @@ const app = express();
 const port = 3000;
 
 app.get('/', (req, res) => {
-  res.send('Hello from Node.js Demo App and this is my first task!');
+  res.send('Hello CI/CD — updated code!');
 });
 
 app.listen(port, () => {
   console.log(`App running at http://localhost:${port}`);
 });
-
